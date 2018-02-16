@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Commands used
-# echo, apt-get, addgroup, useradd, adduser, sed, wget, tar, 
+# echo, apt-get, addgroup, useradd, adduser, sed, wget, tar, echo
 # ln, chown, mkdir, chmod, cd, rm, exec, sudo, ssh-keygen, ssh-keyscan
 
 echo 'Installing dependencies ...'
@@ -11,6 +11,7 @@ apt-get install openjdk-8-jre openjdk-8-jdk ssh rsync -y
 
 echo 'Configuring hadoop user & groups ...'
 addgroup hadoop
+
 USER=hduser
 PASS=password
 HOME_NEW=/home/hduser
@@ -33,12 +34,11 @@ echo $HOME_NEW
 
 echo 'Downloading hadoop for apache.org ...'
 cd $HOME_NEW
-wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/hadoop/common/stable/hadoop-2.9.0.tar.gz
-tar xzf hadoop-2.9.0.tar.gz
-ln -s hadoop-2.9.0 hadoop
+wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz  
+tar xzf hadoop-2.7.4.tar.gz
+ln -s hadoop-2.7.4 hadoop
 
 echo 'Create a temp/data directory for hadoop ...'
-# we want tmp and hdfs to be owned by hduser
 mkdir tmp
 mkdir hdfs
 
@@ -62,6 +62,6 @@ ssh-keyscan localhost >> /home/hduser/.ssh/known_hosts
 ssh-keyscan 0.0.0.0 >> /home/hduser/.ssh/known_hosts
 
 echo 'Editing java path in hadoop-env.sh  ...'
-sed -i '25s/.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-openjdk-amd64\//' hadoop-env.sh
+sed -i '25s/.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-openjdk-amd64/' hadoop-env.sh
 
 echo 'Finished Install ...'

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Commands used
+# exec, cd, jps, echo
+
 HOME_NEW=/home/hduser
 exec sudo -u hduser /bin/sh - << eof
 cd $HOME_NEW

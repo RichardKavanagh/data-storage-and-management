@@ -2,11 +2,9 @@
 # the script is licensed under the MIT license.
 
 # bash options
-#set -e
-
-# commands used: 
+# set -e
+# Commands used: 
 # ls, cd, man, echo, mkdir, rm, tac, rev, top, ps, grep, kill, vmstat, du, factor, cut
-
 
 function main {
 	echo 'List a directory with most recently modified files first'
