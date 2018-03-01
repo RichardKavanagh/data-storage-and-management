@@ -9,7 +9,7 @@ then
     echo "Hduser already exists, skipping ..."
 else
 	echo 'Adding new user ...'
-    USER=hduser
+	USER=hduser
 	PASS=password
 	HOME_NEW=/home/hduser
 	useradd -p $(openssl passwd -1 $PASS) -m $USER
