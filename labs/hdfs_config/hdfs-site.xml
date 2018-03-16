@@ -1,0 +1,18 @@
+<configuration>
+	<property>
+		<name>dfs.replication</name>
+		<value>1</value>
+	</property>
+	<property>
+		<name>dfs.datanode.data.dir</name>
+		<value>/home/hduser/hdfs</value>
+	</property>
+	<property>
+		<name>dfs.datanode.data.dir.perm</name>
+		<value>755</value>
+	</property>
+	<property>
+		<name>dfs.datanode.max.xcievers</name>
+		<value>8192</value>
+	</property>
+</configuration>

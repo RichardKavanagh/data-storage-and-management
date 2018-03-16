@@ -34,9 +34,9 @@ echo $HOME_NEW
 
 echo 'Downloading hadoop for apache.org ...'
 cd $HOME_NEW
-wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz
-tar xzf hadoop-2.7.4.tar.gz
-ln -s hadoop-2.7.4 hadoop
+wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz
+tar xzf hadoop-2.7.5.tar.gz
+ln -s hadoop-2.7.5 hadoop
 
 echo 'Create a temp/data directory for hadoop ...'
 mkdir tmp
