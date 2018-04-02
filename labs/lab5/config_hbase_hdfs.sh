@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Commands used 
+# Commands used echo, cd, rm, wget, hostname, jps
 
-echo 'Configuring Hbase to use Hadoop File System ...'
+echo 'Configuring Hbase to use HDFS instead of local file system ...'
 
 HOME_NEW=/home/hduser
 exec sudo -u hduser /bin/sh - << eof
@@ -31,10 +31,9 @@ rm hbase-site.xml
 wget https://raw.githubusercontent.com/RichardKavanagh/data-storage-and-management/master/labs/hdfs_config/hbase-site.xml
 cd $HOME_NEW
 
-echo 'Editing /etc/hosts file ...'
-
+echo 'Please ensure the following values to the /etc/hosts file under localhostn & DSM ...'
 /sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' 
-hostname 
+hostname
 
 echo 'Reformatiing the HDFS namenode ...'
 cd hadoop
@@ -44,6 +43,7 @@ echo 'Restarting Hadoop services ...'
 sbin/start-dfs.sh
 sbin/start-yarn.sh
 cd $HOME_NEW
+
 
 echo 'Restarting Hbase services ...'
 cd hbase
