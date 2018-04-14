@@ -5,23 +5,9 @@
 
 HOME_NEW=/home/hduser
 
-function install_hduser {
-
-	if getent passwd hduser > /dev/null 2>&1; then
-	    echo "Hduser already exists, skipping ..."
-	else
-		echo 'Adding new user ...'
-		USER=hduser
-		PASS=password
-		HOME_NEW=/home/hduser
-		useradd -p $(openssl passwd -1 $PASS) -m $USER
-		adduser hduser sudo
-	fi
-}
-
-
 function install_mysql {
 
+	echo 'Starting MySQL installation ...'
 	echo 'Installing MySQL dependencies ...'
 	dpkg --configure -a
 	apt-get update
@@ -41,13 +27,15 @@ function install_mysql {
 	echo 'Creating MySQL database & test table ...'
 	mysql --user="root" --password="password" --execute="CREATE DATABASE BenchTest";
 	mysql --user="root" --password="password" --database="BenchTest" < insert_test_data.sql
-
 	rm insert_test_data.sql
+
+	echo 'Finished MySQL installation ...'
 }
 
 
 function install_mongodb {
 
+	echo 'Starting MongoDB installation ...'
 	echo 'Downloading MongoDB ...'
 	cd $HOME_NEW
 	curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz
@@ -60,17 +48,18 @@ function install_mongodb {
 	cd data
 	mkdir -p db
 
-	echo 'Launching MondoDB instance ...'
+	echo 'Launching MongoDB instance ...'
 	cd $HOME_NEW
 	cd mongodb
 
 	bin/mongod --bind_ip 127.0.0.1 </dev/null &>/dev/null &
+	echo 'Finished MongoDB installation ...'
 }
 
 
 function main {
 
-	install_hduser
+	./helper_scripts/add_user.sh
 	if [ $1 == 'mysql' ]
 	then
 		install_mysql
