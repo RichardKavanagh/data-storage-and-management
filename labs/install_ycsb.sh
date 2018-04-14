@@ -4,17 +4,9 @@
 # echo, if, getent, else, fi, useradd, exec, cd, echo, curl, tar
 
 echo 'Starting YCSB installation ...'
-if [ getent passwd hduser > /dev/null 2>&1 ]
-then
-    echo "Hduser already exists, skipping ..."
-else
-	echo 'Adding new user ...'
-	USER=hduser
-	PASS=password
-	HOME_NEW=/home/hduser
-	useradd -p $(openssl passwd -1 $PASS) -m $USER
-	adduser hduser sudo
-fi
+
+echo 'Configuring hadoop user & groups ...'
+./helper_scripts/add_user.sh
 
 echo 'Logging in as hduser ...'
 HOME_NEW=/home/hduser
