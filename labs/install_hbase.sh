@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# Commands used 
+# Commands used
 # mkdir, exec, wget, tar, ln, sed, cd, rm
+
+echo 'Starting Hbase installation ...'
+
+echo 'Configuring hadoop user & groups ...'
+./helper_scripts/add_user.sh
 
 echo 'Creating /usr/data/hbase dir ...'
 mkdir /usr/data
@@ -17,9 +22,9 @@ exec sudo -u hduser /bin/sh - << eof
 cd $HOME_NEW
 
 echo 'Downloading hbase from apache ...'
-wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/hbase/stable/hbase-1.2.6-bin.tar.gz
-tar xzf hbase-1.2.6-bin.tar.gz
-ln -s hbase-1.2.6 hbase
+wget http://www-eu.apache.org/dist/hbase/1.2.6/hbase-1.2.6-src.tar.gz
+tar xzf hbase-1.2.6-src.tar.gz
+ln -s hbase-1.2.6-src hbase
 
 echo 'Editing java path in conf/hbase-env.sh file ...' 
 sed -i '27s/.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-openjdk-amd64/' /home/hduser/hbase/conf/hbase-env.sh
@@ -34,6 +39,4 @@ rm hbase-site.xml
 echo 'Downloading new hbase-site.xml ...'
 wget https://gist.githubusercontent.com/RichardKavanagh/52d638a5a456d95808d45f7e4f6117a4/raw/e59870f810ebab40a3229826113e553eaf32e154/hbase-site.xml
 
-echo 'Starting hbase ...'
-cd $HOME_NEW/hbase
-bin/start-hbase.sh
+echo 'Finished Hbase installation ...'
