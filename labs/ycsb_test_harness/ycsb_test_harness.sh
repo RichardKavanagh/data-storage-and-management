@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# use command line parameter for Test ID
+# Commands used 
 
+# Use command line parameter for Test ID
 if [ "$1" == "" ]; then
     echo "You must supply a Test Id string!!"
     exit
@@ -11,7 +12,10 @@ TEST_ID=$1
 
 # set some variable values
 TEST_DATE=`date +%d%m%y`
-YCSB_HOME=/home/hduser/ycsb-0.8.0
+
+#YCSB_HOME=/home/hduser/ycsb-0.8.0
+YCSB_HOME=/home/hduser/ycsb-0.11.0
+
 YELLOW="\033[0;33m"
 NOCOLOUR="\033[0m"
 
@@ -20,15 +24,15 @@ mkdir $OUTPUT_DIR
 
 
 # for each database / for each workload / for each op count
-for db in `cat testdbs.txt`
+for db in `cat /test_config/test_dbs.txt`
 do
     echo -e "DATABASE: $db"
-    for wl in `cat workloads.txt`
+    for wl in `cat /test_config/workloads.txt`
     
     do
 
         echo -e "\tWORKLOAD: $wl"
-        for oc in `cat op_counts.txt` 
+        for oc in `cat /test_config/op_counts.txt` 
 
         do
             echo -e "\t\tOPCOUNT: $oc"
@@ -36,7 +40,7 @@ do
 
             if [ "$db" == "jdbc" ]; then
                 echo -e "\t\t\t jdbc"
-                mysql -uroot -ppassword < ./clear_scripts/user_table_clear.sql
+                mysql -u root -p password < ./clear_scripts/user_table_clear.sql
             fi
             if [ "$db" == "mongodb" ]; then
                 echo -e "\t\t\t mongodb"
