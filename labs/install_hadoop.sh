@@ -4,19 +4,15 @@
 # echo, apt-get, addgroup, useradd, adduser, sed, wget, tar, echo
 # ln, mkdir, chmod, cd, rm, exec, sudo, ssh-keygen, ssh-keyscan
 
+echo 'Starting Hadoop installation ...'
+
 echo 'Installing dependencies ...'
 dpkg --configure -a
 apt-get update
 apt-get install openjdk-8-jre openjdk-8-jdk ssh rsync -y
 
 echo 'Configuring hadoop user & groups ...'
-addgroup hadoop
-
-USER=hduser
-PASS=password
-HOME_NEW=/home/hduser
-useradd -p $(openssl passwd -1 $PASS) -m $USER
-adduser hduser sudo
+./helper_scripts/add_user.sh
 
 echo 'Disabling IPv6 ...'
 CF=/etc/sysctl.conf
@@ -24,6 +20,7 @@ sed -i '$ a net.ipv6.conf.all.disable_ipv6=1' $CF
 sed -i '$ a net.ipv6.conf.default.disable_ipv6=1' $CF
 sed -i '$ a net.ipv6.conf.lo.disable_ipv6=1' $CF
 
+HOME_NEW=/home/hduser
 echo 'Current user id='
 id
 exec sudo -u hduser /bin/sh - << eof
@@ -34,7 +31,7 @@ echo $HOME_NEW
 
 echo 'Downloading hadoop for apache.org ...'
 cd $HOME_NEW
-wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz
+wget http://www-eu.apache.org/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz
 tar xzf hadoop-2.7.5.tar.gz
 ln -s hadoop-2.7.5 hadoop
 
@@ -64,4 +61,4 @@ ssh-keyscan 0.0.0.0 >> /home/hduser/.ssh/known_hosts
 echo 'Editing java path in hadoop-env.sh  ...'
 sed -i '25s/.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-openjdk-amd64/' hadoop-env.sh
 
-echo 'Finished Install ...'
+echo 'Finished Hadoop installation ...'
