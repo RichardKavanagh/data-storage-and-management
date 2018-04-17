@@ -22,6 +22,6 @@ if [ "$1" == "mysql" ]; then
 	sed -i '22s/.*/db.passwd=password/' db.properties
 fi
 
-cd $HOME_NEW/data-storage-and-management/labs/ycsb_test_harness
+cd $HOME_NEW/data-storage-and-management/ycsb_test_harness
 
 echo -e '\tFinished YCSB configuration for:' $1
