@@ -3,13 +3,12 @@
 # Commands used exec, sudo, echo, if, cd, sed
 
 HOME_NEW=/home/hduser
-exec sudo -u hduser /bin/sh - << eof
 cd $HOME_NEW
 
 echo -e '\tConfiguring YCSB for database:' $1
 if [ "$1" == "mysql" ]; then
 
-	echo -e "\t\tConfiguring the mysql-connector files to the YCSB environment ..."
+	echo -e "\tConfiguring the mysql-connector files to the YCSB environment ..."
 	cd $HOME_NEW
 	cd ycsb-0.11.0/lib
 	cp /usr/share/java/mysql-connector-java-5.1.38.jar .
@@ -25,4 +24,4 @@ fi
 
 cd $HOME_NEW/data-storage-and-management/labs/ycsb_test_harness
 
-echo -e '\tFinished ycsb configuration for:' $1
+echo -e '\tFinished YCSB configuration for:' $1

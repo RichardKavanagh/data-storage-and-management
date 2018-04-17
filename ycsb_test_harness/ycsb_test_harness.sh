@@ -12,14 +12,12 @@ echo "Setting environment variables ..."
 TEST_DATE=`date +%d%m%y`
 YELLOW="\033[0;33m"
 NOCOLOUR="\033[0m"
-
 HOME_NEW=/home/hduser
 YCSB_HOME=$HOME_NEW/ycsb-0.11.0
 OUTPUT_DIR="$YCSB_HOME/output/$1"
 
 echo "Creating YCSB output directory for workload output at" $OUTPUT_DIR
 mkdir -p "$OUTPUT_DIR"
-
 
 function clean_database {
 
@@ -41,13 +39,11 @@ function clean_database {
 function run_workload {
 
     echo -n -e "${YELLOW}"
-
     if [ "$db" == "mysql" ]; then
-
-        echo -e "\t\t\t  $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/jdbc-binding/conf/db.properties -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt"
-        #$YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/jdbc-binding/conf/db.properties -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt        
+        db='jdbc'
+        $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/jdbc-binding/conf/db.properties -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
+        db='mysql'
     fi
-
     if [ "$db" == "mongodb" ]; then
         echo -e "\t\t\t MongoDB"
         $YCSB_HOME/bin/ycsb $phaseType $db -s -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
@@ -60,37 +56,34 @@ function run_workload {
         echo -e "\t\t\t Hbase10"
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/workloads/$wl -p table=usertable -p columnfamily=family -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
     fi
-
     echo -n -e "${NOCOLOUR}"
-
 }
 
 
 echo "Running Workloads ..."
-for db in `cat test_config/test_dbs.txt` 
+for db in `cat test_config/test_dbs.txt`
 do
     ./configure_database_for_ycsb.sh "$db"
     echo -e "DATABASE: $db"
 
-    for wl in `cat test_config/workloads.txt` 
+    for wl in `cat test_config/workloads.txt`
     do
         echo -e "\tRUNNING: $wl"
-        for oc in `cat test_config/op_counts.txt` 
+        for oc in `cat test_config/op_counts.txt`
 
         do
             echo -e "\t\t OPCOUNT: $oc"
             echo -e "\t\t\t  Running clear scripts ..."
             clean_database
 
-            for phaseType in load run 
+            for phaseType in load run
             do
                 echo -e "\t\t\t  Running $phaseType phase ..."
-                run_workload 
+                run_workload
             done
         done
-        echo -e "\tFINISHED: $wl" 
+        echo -e "\tFINISHED: $wl"
     done
-    
-    echo -e "FINISHED: $db" 
+    echo -e "FINISHED: $db"
 done
 echo "Finished YCSB Test Harness ..."

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Commands used
-# if,else,fi, echo, useradd, apt-get, purge, rm, wget, mysql,tar, ln, mkdir
+# if,else,fi, echo, useradd, apt-get, purge, rm, wget, mysql, tar, ln, mkdir
 
 HOME_NEW=/home/hduser
 
@@ -12,6 +12,7 @@ function install_mysql {
 	dpkg --configure -a
 	apt-get update
 	apt-get install mysql-server mysql-client libmysql-java -y
+	apt-get install openjdk-8-jre openjdk-8-jdk
 
 	echo 'Purging MySQL packages ...'
 	apt purge mysql* -y
