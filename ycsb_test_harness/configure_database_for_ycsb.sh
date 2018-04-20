@@ -21,6 +21,12 @@ if [ "$1" == "mysql" ]; then
 	sed -i '21s/.*/db.user=root/' db.properties
 	sed -i '22s/.*/db.passwd=password/' db.properties
 fi
+if [ "$1" == "cassandra2-cql" ]; then
+
+	echo 'Inserting test data to Cassandra ...'
+	$HOME_NEW/cassandra/bin/cqlsh -f ..//lab6/insert_test_data.cql
+fi
+
 
 cd $HOME_NEW/data-storage-and-management/ycsb_test_harness
 

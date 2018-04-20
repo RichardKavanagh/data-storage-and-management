@@ -24,11 +24,11 @@ function clean_database {
     if [ "$db" == "mysql" ]; then
         mysql --user="root" --password="password" < ./clear_scripts/user_table_clear.sql  2> /dev/null
     fi
+    if [ "$db" == "cassandra2-cql" ]; then
+        $HOME_NEW/cassandra/bin/cqlsh -f ./clear_scripts/user_table_clear.cql
+    fi
     if [ "$db" == "mongodb" ]; then
         mongo < ./clear_scripts/user_table_clear.js
-    fi
-    if [ "$db" == "cassandra2-cql" ]; then
-        cqlsh -f ./clear_scripts/user_table_clear.cql
     fi
     if [ "$db" == "hbase10" ]; then
         ./clear_scripts/user_table_clear.hbase
@@ -39,23 +39,25 @@ function clean_database {
 function run_workload {
 
     echo -n -e "${YELLOW}"
+
     if [ "$db" == "mysql" ]; then
         db='jdbc'
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/jdbc-binding/conf/db.properties -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
         db='mysql'
     fi
-    if [ "$db" == "mongodb" ]; then
-        echo -e "\t\t\t MongoDB"
-        $YCSB_HOME/bin/ycsb $phaseType $db -s -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
-    fi
     if [ "$db" == "cassandra2-cql" ]; then
         echo -e "\t\t\t Cassandra2-cql"
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/workloads/$wl -p hosts=localhost -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
+    fi
+    if [ "$db" == "mongodb" ]; then
+        echo -e "\t\t\t MongoDB"
+        $YCSB_HOME/bin/ycsb $phaseType $db -s -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
     fi
     if [ "$db" == "hbase10" ]; then
         echo -e "\t\t\t Hbase10"
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/workloads/$wl -p table=usertable -p columnfamily=family -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
     fi
+
     echo -n -e "${NOCOLOUR}"
 }
 
