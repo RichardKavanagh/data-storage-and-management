@@ -24,7 +24,8 @@ function clean_database {
     if [ "$db" == "mysql" ]; then
         mysql --user="root" --password="password" < ./clear_scripts/user_table_clear.sql  2> /dev/null
     fi
-    if [ "$db" == "cassandra2-cql" ]; then
+    # NOTE: The 'cassandra2-cql' client has been deprecated. It has been renamed to simply 'cassandra-cql'
+    if [ "$db" == "cassandra-cql" ]; then
         $HOME_NEW/cassandra/bin/cqlsh -f ./clear_scripts/user_table_clear.cql
     fi
     if [ "$db" == "mongodb" ]; then
@@ -45,16 +46,17 @@ function run_workload {
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/jdbc-binding/conf/db.properties -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
         db='mysql'
     fi
-    if [ "$db" == "cassandra2-cql" ]; then
-        echo -e "\t\t\t Cassandra2-cql"
+    # NOTE: The 'cassandra2-cql' client has been deprecated. It has been renamed to simply 'cassandra-cql'
+    if [ "$db" == "cassandra-cql" ]; then
+        echo -e "\t\t\t cassandra-cql"
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/workloads/$wl -p hosts=localhost -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
     fi
     if [ "$db" == "mongodb" ]; then
-        echo -e "\t\t\t MongoDB"
+        echo -e "\t\t\t mongodb"
         $YCSB_HOME/bin/ycsb $phaseType $db -s -P $YCSB_HOME/workloads/$wl -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
     fi
     if [ "$db" == "hbase10" ]; then
-        echo -e "\t\t\t Hbase10"
+        echo -e "\t\t\t hbase10"
         $YCSB_HOME/bin/ycsb $phaseType $db -P $YCSB_HOME/workloads/$wl -p table=usertable -p columnfamily=family -p recordcount=$oc -p operationcount=$oc | tee $OUTPUT_DIR/${db}_${wl}_${oc}_${phaseType}_${TEST_DATE}.txt
     fi
 

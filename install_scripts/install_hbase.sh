@@ -6,7 +6,7 @@
 echo 'Starting Hbase installation ...'
 
 echo 'Configuring hadoop user & groups ...'
-./helper_scripts/add_user.sh
+../helper_scripts/add_user.sh
 
 echo 'Creating /usr/data/hbase dir ...'
 mkdir /usr/data

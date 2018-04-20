@@ -12,7 +12,7 @@ apt-get update
 apt-get install openjdk-8-jre openjdk-8-jdk ssh rsync -y
 
 echo 'Configuring hadoop user & groups ...'
-./helper_scripts/add_user.sh
+../helper_scripts/add_user.sh
 
 echo 'Disabling IPv6 ...'
 CF=/etc/sysctl.conf

@@ -6,6 +6,7 @@ HOME_NEW=/home/hduser
 cd $HOME_NEW
 
 echo -e '\tConfiguring YCSB for database:' $1
+
 if [ "$1" == "mysql" ]; then
 
 	echo -e "\tConfiguring the mysql-connector files to the YCSB environment ..."
@@ -21,13 +22,11 @@ if [ "$1" == "mysql" ]; then
 	sed -i '21s/.*/db.user=root/' db.properties
 	sed -i '22s/.*/db.passwd=password/' db.properties
 fi
-if [ "$1" == "cassandra2-cql" ]; then
+if [ "$1" == "cassandra-cql" ]; then
 
 	echo 'Inserting test data to Cassandra ...'
-	$HOME_NEW/cassandra/bin/cqlsh -f ..//lab6/insert_test_data.cql
+	$HOME_NEW/cassandra/bin/cqlsh -f ./lab6/insert_test_data.cql
 fi
-
-
 cd $HOME_NEW/data-storage-and-management/ycsb_test_harness
 
 echo -e '\tFinished YCSB configuration for:' $1

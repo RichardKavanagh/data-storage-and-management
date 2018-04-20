@@ -6,7 +6,7 @@
 echo 'Starting YCSB installation ...'
 
 echo 'Configuring hadoop user & groups ...'
-./helper_scripts/add_user.sh
+../helper_scripts/add_user.sh
 
 echo 'Logging in as hduser ...'
 HOME_NEW=/home/hduser

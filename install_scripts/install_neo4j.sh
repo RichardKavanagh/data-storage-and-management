@@ -6,7 +6,7 @@
 echo 'Starting Neo4J installation ...'
 
 echo 'Configuring hadoop user & groups ...'
-./helper_scripts/add_user.sh
+../helper_scripts/add_user.sh
 
 echo 'Installing dependencies ...'
 dpkg --configure -a

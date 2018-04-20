@@ -60,7 +60,7 @@ function install_mongodb {
 
 function main {
 
-	./helper_scripts/add_user.sh
+	../helper_scripts/add_user.sh
 	if [ $1 == 'mysql' ]
 	then
 		install_mysql
